@@ -1,15 +1,25 @@
-import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "./components/Layout";
 import HomePage from "./page/HomePage";
-import Layout from "./components/layout";
 
-function App() {
-  return (
-    <Layout>
-      <div className="text-center">
-        <HomePage />
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    errorElement: (
+      <div className="min-h-screen flex justify-center items-center">
+        <h1 className="text-4xl">404 - Page Not Found 🐖🍓</h1>
       </div>
-    </Layout>
-  );
-}
+    ),
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+    ],
+  },
+]);
 
-export default App;
+export default function App() {
+  return <RouterProvider router={router} />;
+}
