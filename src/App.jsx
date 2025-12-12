@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
+import HomePage from "./page/HomePage";
+import Layout from "./components/layout";
 
-const App = () => {
+function App() {
   return (
-    <div>App</div>
-  )
+    <Layout>
+      <div className="text-center">
+        <HomePage />
+      </div>
+    </Layout>
+  );
 }
 
-export default App
+export default App;
