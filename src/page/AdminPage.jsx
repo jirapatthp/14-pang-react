@@ -4,27 +4,14 @@ import { Link } from "react-router-dom";
 
 const API_URL = "https://67eca027aa794fb3222e43e2.mockapi.io/members";
 
-const AdminPage = () => {
+export default function AdminPage({ members, setMembers, fetchMembers }) {
   const [form, setForm] = useState({
     name: "",
     lastName: "",
     position: "",
   });
 
-  const [members, setMembers] = useState([]);
 
-  const fetchMembers = async () => {
-    try {
-      const response = await axios.get(API_URL);
-      setMembers(response.data);
-    } catch (error) {
-      console.error("GET ERROR:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchMembers();
-  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -34,13 +21,10 @@ const AdminPage = () => {
   };
 
   const deleteMember = async (id) => {
-    try {
-      await axios.delete(`${API_URL}/${id}`);
-      fetchMembers();
-    } catch (error) {
-      console.error("DELETE ERROR:", error);
-    }
-  };
+  await axios.delete(`${API_URL}/${id}`);
+  setMembers((prev) => prev.filter((m) => m.id !== id));
+};
+
 
   return (
     <div className="flex flex-col items-center mt-20 ">
@@ -73,9 +57,10 @@ const AdminPage = () => {
           onSubmit={async (e) => {
             e.preventDefault();
             try {
-              const response = await axios.post(API_URL, form);
-              console.log("PST SUCCESS:", response.data);
-              fetchMembers();
+              const res = await axios.post(API_URL, form);
+              setMembers((prev) => [...prev, res.data]);
+
+
               setForm({
                 name: "",
                 lastName: "",
@@ -114,7 +99,7 @@ const AdminPage = () => {
           />
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-500 text-white rounded shadow"
+            className="px-6 py-2 bg-blue-500 text-white rounded shadow "
           >
             Save
           </button>
@@ -160,6 +145,4 @@ const AdminPage = () => {
       </div>
     </div>
   );
-};
-
-export default AdminPage;
+}
