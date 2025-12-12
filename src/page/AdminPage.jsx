@@ -1,10 +1,13 @@
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ButtonSelectRole from "../components/ButtonSelectRole";
+import Table from "../components/Table";
 
 const API_URL = "https://67eca027aa794fb3222e43e2.mockapi.io/members";
 
 export default function AdminPage({ members, setMembers, fetchMembers }) {
+  const [deletingId, setDeletingId] = useState(null);
   const [form, setForm] = useState({
     name: "",
     lastName: "",
@@ -19,32 +22,30 @@ export default function AdminPage({ members, setMembers, fetchMembers }) {
     }));
   };
 
+  // const deleteMember = async (id) => {
+  //   await axios.delete(`${API_URL}/${id}`);
+  //   setMembers((prev) => prev.filter((m) => m.id !== id));
+  // };
   const deleteMember = async (id) => {
-    await axios.delete(`${API_URL}/${id}`);
-    setMembers((prev) => prev.filter((m) => m.id !== id));
+    try {
+      const userConfirmed = window.confirm("delet(?)");
+
+      if (userConfirmed) {
+        setDeletingId(id);
+        await axios.delete(`${API_URL}/${id}`);
+        await fetchMembers();
+      }
+    } catch (error) {
+      console.log("ลบไม่ได้จ้า มัม", error);
+    } finally {
+      setDeletingId(null);
+    }
   };
 
   return (
-    <div className="flex flex-col items-center mt-20 ">
-      <h1 className="text-5xl font-bold leading-snug">
-        Generation Thailand <br />
-        Home - Admin View
-      </h1>
-
+    <div className="flex flex-col items-center gap-6 ">
       {/* Buttons */}
-      <div className="flex gap-6 mt-20">
-        <Link to="/user">
-          <button className="px-6 py-2 bg-white border border-gray-300 rounded shadow">
-            User Home View
-          </button>
-        </Link>
-
-        <Link to="/admin">
-          <button className="px-6 py-2 bg-white border border-gray-300 rounded shadow">
-            Admin Home View
-          </button>
-        </Link>
-      </div>
+      <ButtonSelectRole />
 
       {/* Create User */}
       <div className="w-[800px] mt-12">
@@ -104,7 +105,13 @@ export default function AdminPage({ members, setMembers, fetchMembers }) {
       </div>
 
       {/* Table */}
-      <div className="w-[800px] mt-12">
+      <Table
+        members={members}
+        isAdmin
+        handleDelete={deleteMember}
+        deletingId={deletingId}
+      />
+      {/* <div className="w-[800px] mt-12">
         <table className="w-full border border-gray-300 border-collapse">
           <thead>
             <tr className="bg-gray-100">
@@ -137,7 +144,7 @@ export default function AdminPage({ members, setMembers, fetchMembers }) {
             ))}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 }
