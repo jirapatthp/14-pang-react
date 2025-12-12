@@ -11,7 +11,6 @@ export default function AdminPage({ members, setMembers, fetchMembers }) {
     position: "",
   });
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -21,10 +20,9 @@ export default function AdminPage({ members, setMembers, fetchMembers }) {
   };
 
   const deleteMember = async (id) => {
-  await axios.delete(`${API_URL}/${id}`);
-  setMembers((prev) => prev.filter((m) => m.id !== id));
-};
-
+    await axios.delete(`${API_URL}/${id}`);
+    setMembers((prev) => prev.filter((m) => m.id !== id));
+  };
 
   return (
     <div className="flex flex-col items-center mt-20 ">
@@ -34,7 +32,7 @@ export default function AdminPage({ members, setMembers, fetchMembers }) {
       </h1>
 
       {/* Buttons */}
-      <div className="flex gap-6 mt-10">
+      <div className="flex gap-6 mt-20">
         <Link to="/user">
           <button className="px-6 py-2 bg-white border border-gray-300 rounded shadow">
             User Home View
@@ -59,7 +57,6 @@ export default function AdminPage({ members, setMembers, fetchMembers }) {
             try {
               const res = await axios.post(API_URL, form);
               setMembers((prev) => [...prev, res.data]);
-
 
               setForm({
                 name: "",
@@ -108,8 +105,6 @@ export default function AdminPage({ members, setMembers, fetchMembers }) {
 
       {/* Table */}
       <div className="w-[800px] mt-12">
-        <h2 className="text-lg font-semibold mb-2">Table 1</h2>
-
         <table className="w-full border border-gray-300 border-collapse">
           <thead>
             <tr className="bg-gray-100">

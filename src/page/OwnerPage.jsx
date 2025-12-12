@@ -3,7 +3,7 @@ import React from "react";
 const OwnerPage = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-4 pt-10">
-      <h1 className="text-3xl  font-medium font-mono">
+      <h1 className="text-3xl  font-medium ">
         14 Pang (แป้ง) - JSD11
       </h1>
 

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function UserPage({ members }) {
   return (
-    <div className="flex flex-col items-center mt-20 ">
+    <div className="flex flex-col items-center mt-20 gap-8">
       <h1 className="text-5xl font-bold leading-snug">
         Generation Thailand <br />
         Home - User View
